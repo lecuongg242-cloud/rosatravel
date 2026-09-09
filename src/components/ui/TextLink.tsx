@@ -33,11 +33,29 @@ function laLienKetNgoai(href: string): boolean {
   return /^(https?:|tel:|mailto:|#)/.test(href)
 }
 
+/**
+ * Bộ class dùng chung cho TextLink và TextButton. Tách ra vì hai thành phần
+ * PHẢI trông giống hệt nhau: người đọc không phân biệt được đâu là liên kết
+ * đâu là nút, và cũng không cần phân biệt — họ chỉ thấy một dòng chữ gạch chân
+ * bấm được. Chép class sang chỗ khác là chắc chắn có ngày lệch nhau.
+ */
+function lopChuGachChan(size: keyof typeof SIZES, className: string): string {
+  return (
+    // `gach-chan-quet` (globals.css) lo phần gạch chân: một nét tĩnh cộng một
+    // nét đất nung quét ngang khi hover. Trước đây chỗ này dùng `underline` +
+    // `decoration-*` của Tailwind, chỉ đổi được MÀU chứ không tạo ra chuyển
+    // động nào — text-decoration không animate được.
+    `${SIZES[size]} gach-chan-quet ` +
+    // 300ms để KHỚP với nét gạch quét trong `.gach-chan-quet` (globals.css).
+    // Để 150ms thì chữ đổi màu xong từ lúc nét mới đi được nửa đường — một
+    // thao tác mà mắt đọc ra thành hai.
+    `transition-colors duration-[var(--duration-base)] ease-[var(--ease-hover)] ` +
+    `hover:text-clay-500 ${className}`
+  )
+}
+
 export function TextLink({ children, href, size = 'md', className = '' }: TextLinkProps) {
-  const classes =
-    `${SIZES[size]} underline decoration-rule-strong decoration-1 underline-offset-[0.3em] ` +
-    `transition-colors duration-[var(--duration-fast)] ease-[var(--ease-hover)] ` +
-    `hover:decoration-clay-500 hover:text-clay-500 ${className}`
+  const classes = lopChuGachChan(size, className)
 
   if (laLienKetNgoai(href)) {
     return (
@@ -50,6 +68,28 @@ export function TextLink({ children, href, size = 'md', className = '' }: TextLi
     <Link href={href} className={classes}>
       {children}
     </Link>
+  )
+}
+
+/**
+ * CÙNG DÁNG với TextLink nhưng là <button> thật.
+ *
+ * Dùng khi thao tác KHÔNG đi đâu cả — mở hộp thoại, bật/tắt một khối. Chỗ đó
+ * mà đặt <a> thì trình đọc màn hình thông báo "liên kết", người dùng chờ được
+ * chuyển trang; chuột giữa mở tab mới ra một URL vô nghĩa; và Space không kích
+ * hoạt được. Ngược lại, <button> cho một điều hướng thật thì mất Ctrl+click,
+ * mất preview đường dẫn ở thanh trạng thái, và Google không lần theo được.
+ */
+export function TextButton({
+  children,
+  size = 'md',
+  className = '',
+  ...props
+}: ComponentPropsWithoutRef<'button'> & { size?: keyof typeof SIZES }) {
+  return (
+    <button type="button" {...props} className={lopChuGachChan(size, className)}>
+      {children}
+    </button>
   )
 }
 
@@ -68,8 +108,20 @@ export function SubmitButton({
     <button
       {...props}
       className={
-        `rounded-full bg-clay-600 text-on-clay px-8 py-3 text-meta font-medium ` +
-        `transition-opacity duration-[var(--duration-fast)] ease-[var(--ease-hover)] ` +
+        // Kích thước khai THẲNG ở đây, không để chỗ gọi ghi đè.
+        //
+        // Đặt `px-5` vào `className` rồi mong nó thắng `px-8` ở đây là SAI, và
+        // đã sai thật: thứ tự trong chuỗi class không quyết định gì cả — trình
+        // duyệt chọn theo thứ tự trong FILE CSS, mà Tailwind thì tự sắp các
+        // tiện ích theo thang của nó (px-5 nằm trước px-8). Kết quả đo được:
+        // nút vẫn giữ đệm 32px trong khi chỗ gọi tưởng đã đổi thành 20px.
+        //
+        // Chỉ có một chỗ dùng nút này (biểu mẫu liên hệ), nên số đo đúng cứ đặt
+        // luôn ở đây: cao 45px, đệm ngang 20px, khoảng hở 16px cho biểu tượng —
+        // lấy từ nút "Send via Email" của spotstravel.co.
+        `inline-flex h-[45px] items-center gap-4 rounded-full bg-clay-600 px-5 ` +
+        `text-meta font-medium text-on-clay ` +
+        `transition-opacity duration-[var(--duration-base)] ease-[var(--ease-hover)] ` +
         `hover:opacity-85 disabled:opacity-50 ${className}`
       }
     >
