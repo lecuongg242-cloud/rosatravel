@@ -1,0 +1,227 @@
+{
+  "Metadata": {
+    "title": "Rosa Travel",
+    "description": "Tour du lịch trong nước và nước ngoài, tư vấn tận tâm, đặt tour nhanh chóng."
+  },
+  "Home": {
+    "eyebrow": "Sắp ra mắt",
+    "title": "Những hành trình mới đang được chuẩn bị",
+    "description": "Rosa Travel đang hoàn thiện website. Hẹn gặp bạn trong những chuyến đi sắp tới."
+  },
+  "Common": {
+    "viewMore": "Xem thêm",
+    "viewAll": "Xem tất cả",
+    "bookTour": "Đặt tour",
+    "previous": "Xem mục trước",
+    "next": "Xem mục tiếp theo",
+    "skipToContent": "Bỏ qua, tới nội dung chính",
+    "heroLabel": "Banner nổi bật",
+    "goToSlide": "Tới banner {index}"
+  },
+  "Nav": {
+    "main": "Điều hướng chính",
+    "home": "Về trang chủ Rosa Travel",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "menuTitle": "Menu",
+    "hotline": "Hotline",
+    "language": "Chọn ngôn ngữ",
+    "featuredTours": "Tour nổi bật"
+  },
+  "Tour": {
+    "duration": "{days} ngày {nights} đêm",
+    "departure": "Khởi hành từ {place}",
+    "price": "Giá",
+    "originalPrice": "Giá gốc",
+    "from": "Chỉ từ",
+    "rating": "{average} điểm từ {count} đánh giá",
+    "booked": "{count}+ đã đặt chỗ",
+    "upcomingDepartures": "Lịch khởi hành sắp tới",
+    "noDepartures": "Liên hệ để nhận lịch khởi hành mới nhất.",
+    "bookThisTour": "Đặt tour này",
+    "relatedTours": "Tour liên quan",
+    "seatsLeft": "Còn {count} chỗ",
+    "departureStatus": {
+      "available": "Còn chỗ",
+      "limited": "Sắp hết chỗ",
+      "soldout": "Hết chỗ",
+      "cancelled": "Tạm hoãn"
+    }
+  },
+  "Listing": {
+    "from": "Điểm khởi hành",
+    "duration": "Số ngày",
+    "price": "Khoảng giá",
+    "month": "Tháng khởi hành",
+    "sort": "Sắp xếp",
+    "any": "Tất cả",
+    "apply": "Lọc tour",
+    "reset": "Xóa bộ lọc",
+    "results": "{count, plural, =0 {Không có tour nào} other {# tour}}",
+    "removeFilter": "Bỏ lọc {label}",
+    "empty": "Chưa có tour phù hợp. Thử bỏ bớt bộ lọc, hoặc để Rosa Travel tư vấn hành trình cho bạn.",
+    "askConsultant": "Nhờ tư vấn",
+    "durationOptions": {
+      "1-2": "1–2 ngày",
+      "3-4": "3–4 ngày",
+      "5-7": "5–7 ngày",
+      "8+": "Từ 8 ngày"
+    },
+    "priceOptions": {
+      "duoi-5tr": "Dưới 5 triệu",
+      "5-10tr": "5–10 triệu",
+      "10-20tr": "10–20 triệu",
+      "tren-20tr": "Trên 20 triệu"
+    },
+    "sortOptions": {
+      "moi-nhat": "Mới cập nhật",
+      "gia-tang": "Giá thấp đến cao",
+      "gia-giam": "Giá cao đến thấp",
+      "ngan-ngay": "Ít ngày trước"
+    }
+  },
+  "Search": {
+    "title": "Tìm tour",
+    "label": "Tìm tour theo tên, điểm đến",
+    "placeholder": "Bạn muốn đi đâu? Ví dụ: Hồng Kông, Phú Quốc",
+    "submit": "Tìm",
+    "suggestions": "Gợi ý tour",
+    "noSuggestions": "Chưa thấy tour phù hợp với từ khóa này.",
+    "viewAll": "Xem tất cả {count} tour",
+    "resultsTitle": "Kết quả tìm kiếm “{query}”",
+    "hint": "Nhập tên tour, điểm đến hoặc điểm khởi hành. Không cần gõ dấu.",
+    "noResults": "Không tìm thấy tour nào cho “{query}”. Thử từ khóa khác, hoặc để Rosa Travel tư vấn cho bạn."
+  },
+  "BookingForm": {
+    "bookingTitle": "Gửi yêu cầu đặt tour",
+    "bookingDescription": "Điền thông tin, nhân viên Rosa Travel sẽ gọi lại xác nhận chỗ và báo giá chính xác. Bạn chưa cần thanh toán.",
+    "consultationTitle": "Để lại thông tin, chúng tôi gọi lại tư vấn",
+    "consultationDescription": "Cho chúng tôi biết bạn muốn đi đâu, khi nào và đi mấy người.",
+    "fullName": "Họ và tên",
+    "phone": "Số điện thoại / Zalo",
+    "phonePlaceholder": "Ví dụ: 0912 345 678",
+    "email": "Email",
+    "optional": "(không bắt buộc)",
+    "departureDate": "Ngày khởi hành",
+    "otherDate": "Ngày khác / cần tư vấn",
+    "adults": "Người lớn",
+    "children": "Trẻ em (dưới 12 tuổi)",
+    "message": "Lời nhắn",
+    "messagePlaceholderBooking": "Yêu cầu thêm: phòng đơn, ăn chay, đón tiễn sân bay…",
+    "messagePlaceholderConsultation": "Ví dụ: Gia đình 4 người muốn đi Phú Quốc cuối tháng 10, ngân sách khoảng 20 triệu.",
+    "submit": "Gửi yêu cầu",
+    "submitting": "Đang gửi…",
+    "privacy": "Thông tin chỉ dùng để Rosa Travel liên hệ với bạn.",
+    "successTitle": "Đã nhận yêu cầu của bạn",
+    "successMessage": "Cảm ơn bạn! Nhân viên Rosa Travel sẽ liên hệ trong giờ làm việc. Cần gấp, hãy gọi hotline.",
+    "sendAnother": "Gửi yêu cầu khác",
+    "errors": {
+      "invalid": "Vui lòng kiểm tra lại các ô được đánh dấu.",
+      "rateLimited": "Bạn đã gửi nhiều yêu cầu liên tiếp. Vui lòng thử lại sau ít phút hoặc gọi hotline.",
+      "server": "Chưa gửi được yêu cầu. Vui lòng thử lại hoặc gọi hotline.",
+      "type": "Loại yêu cầu không hợp lệ, vui lòng tải lại trang.",
+      "tour": "Tour không hợp lệ, vui lòng tải lại trang.",
+      "fullName": "Nhập họ tên (ít nhất 2 ký tự).",
+      "phone": "Số điện thoại chưa đúng, ví dụ 0912 345 678.",
+      "email": "Email chưa đúng định dạng.",
+      "departureDate": "Ngày khởi hành không hợp lệ.",
+      "adults": "Số người lớn từ 1 đến 99.",
+      "children": "Số trẻ em từ 0 đến 99.",
+      "message": "Lời nhắn tối đa 2000 ký tự."
+    }
+  },
+  "Newsletter": {
+    "fullName": "Họ tên",
+    "phone": "Số điện thoại / Zalo",
+    "submit": "Đăng ký",
+    "success": "Đăng ký thành công! Rosa Travel sẽ gửi ưu đãi mới nhất cho bạn."
+  },
+  "Pagination": {
+    "label": "Phân trang",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "page": "Trang {page}"
+  },
+  "Destination": {
+    "tours": "Tour {name}"
+  },
+  "Blog": {
+    "title": "Cẩm nang du lịch",
+    "description": "Kinh nghiệm, tin tức và ưu đãi từ Rosa Travel.",
+    "categoriesLabel": "Chuyên mục",
+    "all": "Tất cả",
+    "categories": {
+      "guide": "Cẩm nang",
+      "news": "Tin tức",
+      "promotion": "Khuyến mãi",
+      "press": "Báo chí"
+    },
+    "empty": "Chưa có bài viết trong chuyên mục này.",
+    "related": "Bài viết liên quan",
+    "source": "Xem bài gốc"
+  },
+  "ContactPage": {
+    "title": "Liên hệ",
+    "description": "Gọi hotline, nhắn Zalo hoặc để lại thông tin, Rosa Travel sẽ liên hệ lại với bạn.",
+    "interestedIn": "Tour bạn đang quan tâm",
+    "hotline": "Hotline",
+    "email": "Email",
+    "address": "Văn phòng",
+    "channels": "Nhắn tin cho chúng tôi"
+  },
+  "Blocks": {
+    "highlights": "Điểm nổi bật",
+    "itinerary": "Lịch trình",
+    "day": "Ngày {day}",
+    "meals": "Bữa ăn",
+    "meal": {
+      "breakfast": "Sáng",
+      "lunch": "Trưa",
+      "dinner": "Tối"
+    },
+    "included": "Giá tour bao gồm",
+    "excluded": "Không bao gồm",
+    "priceTable": "Bảng giá",
+    "priceColumns": {
+      "label": "Đối tượng",
+      "price": "Giá",
+      "note": "Ghi chú"
+    },
+    "contactForPrice": "Liên hệ",
+    "notes": "Lưu ý",
+    "faq": "Câu hỏi thường gặp",
+    "gallery": "Hình ảnh",
+    "video": "Video"
+  },
+  "Reviews": {
+    "stars": "{rating} trên 5 sao"
+  },
+  "Contact": {
+    "open": "Mở các kênh liên hệ",
+    "close": "Đóng các kênh liên hệ",
+    "barLabel": "Liên hệ nhanh",
+    "call": "Gọi",
+    "more": "Thêm",
+    "sheetTitle": "Kết nối với Rosa Travel",
+    "channels": {
+      "zalo": "Zalo",
+      "messenger": "Messenger",
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "threads": "Threads"
+    }
+  },
+  "Footer": {
+    "contact": "Liên hệ",
+    "follow": "Kết nối với chúng tôi"
+  },
+  "Preview": {
+    "banner": "Bạn đang xem bản nháp. Khách chưa thấy những thay đổi này cho tới khi bấm Xuất bản.",
+    "exit": "Thoát xem nháp"
+  },
+  "NotFound": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang bạn tìm có thể đã đổi địa chỉ hoặc không còn nữa.",
+    "backHome": "Về trang chủ"
+  }
+}

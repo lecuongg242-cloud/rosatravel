@@ -1,0 +1,224 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens — nguồn: docs/DESIGN-zapier.md, điều chỉnh cho du lịch theo
+ * docs/ke-hoach-trien-khai.md mục 2.1. Chỉ một màu nhấn (primary); màu trạng
+ * thái chỉ dùng trong form và thông báo.
+ */
+@theme {
+  --color-primary: #ff4f00;
+  --color-on-primary: #fffefb;
+  --color-ink: #201515;
+  --color-ink-soft: #2f2a26;
+  --color-ink-mid: #36342e;
+  --color-body: #605d52;
+  --color-body-mid: #939084;
+  --color-mute: #c5c0b1;
+  --color-canvas: #fffefb;
+  --color-canvas-soft: #f8f4f0;
+
+  --color-success: #1f7a4d;
+  --color-error: #b42318;
+  --color-warning: #b54708;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-pill: 9999px;
+
+  --text-display-xl: 3.5rem;
+  --text-display-xl--line-height: 1;
+  --text-display-lg: 3rem;
+  --text-display-lg--line-height: 1;
+  --text-display-md: 2rem;
+  --text-display-md--line-height: 2.25rem;
+  --text-display-sub-sm: 1.5rem;
+  --text-display-sub-sm--line-height: 1.875rem;
+  --text-display-sub-sm--letter-spacing: -0.6px;
+  --text-display-xs: 1.25rem;
+  --text-display-xs--line-height: 1.5625rem;
+  --text-display-xs--letter-spacing: -0.5px;
+  --text-body-lg: 1.25rem;
+  --text-body-lg--line-height: 1.875rem;
+  --text-body-md: 1.125rem;
+  --text-body-md--line-height: 1.6875rem;
+  --text-body-sm: 1rem;
+  --text-body-sm--line-height: 1.5rem;
+  --text-caption: 0.875rem;
+  --text-caption--line-height: 1.3125rem;
+
+  --ease-brand: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * Bóng chỉ dành cho lớp phủ (header khi cuộn, mega menu, drawer, sheet, nút nổi).
+ * Card không dùng bóng mà dùng nền canvas-soft (DESIGN-zapier: Soft Card).
+ */
+@theme {
+  --shadow-header: 0 8px 24px -16px rgb(32 21 21 / 0.25);
+  --shadow-panel: 0 24px 48px -16px rgb(32 21 21 / 0.28);
+
+  /*
+   * Mọi lớp phủ phải có animation vào VÀ ra (yêu cầu của chủ dự án). Radix
+   * (Dialog, NavigationMenu) đợi animation `*-out` chạy xong mới gỡ phần tử,
+   * nên chỉ cần gắn class theo data-state; `forwards` giữ trạng thái cuối
+   * trong lúc chờ gỡ.
+   */
+  --animate-overlay-in: rosa-fade-in 200ms var(--ease-brand);
+  --animate-overlay-out: rosa-fade-out 150ms var(--ease-brand) forwards;
+  --animate-pop-in: rosa-pop-in 200ms var(--ease-brand);
+  --animate-pop-out: rosa-pop-out 150ms var(--ease-brand) forwards;
+  --animate-content-in: rosa-fade-in 150ms var(--ease-brand);
+  --animate-content-out: rosa-fade-out 100ms var(--ease-brand) forwards;
+  --animate-drawer-in: rosa-drawer-in 300ms var(--ease-brand);
+  --animate-drawer-out: rosa-drawer-out 250ms var(--ease-brand) forwards;
+  --animate-sheet-in: rosa-sheet-in 300ms var(--ease-brand);
+  --animate-sheet-out: rosa-sheet-out 250ms var(--ease-brand) forwards;
+
+  @keyframes rosa-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes rosa-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes rosa-pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes rosa-pop-out {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+  }
+  @keyframes rosa-drawer-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes rosa-drawer-out {
+    from {
+      transform: none;
+    }
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes rosa-sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: none;
+    }
+  }
+  @keyframes rosa-sheet-out {
+    from {
+      transform: none;
+    }
+    to {
+      transform: translateY(100%);
+    }
+  }
+}
+
+/* Biến font do next/font gắn lên <html>, nên phải dùng `inline`. */
+@theme inline {
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-be-vietnam-pro), var(--font-inter), system-ui, sans-serif;
+}
+
+:root {
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-zoom: 1000ms;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-body-sm text-ink antialiased;
+  }
+}
+
+/* Nội dung soạn trong trình soạn thảo của admin (lịch trình, chính sách, bài viết). */
+@layer components {
+  .rich-text {
+    @apply text-body-md text-body;
+  }
+  .rich-text > * + * {
+    margin-top: 1em;
+  }
+  .rich-text h2 {
+    @apply mt-8 font-display text-display-sub-sm font-semibold text-ink;
+  }
+  .rich-text h3 {
+    @apply mt-6 font-display text-display-xs font-semibold text-ink;
+  }
+  .rich-text strong {
+    @apply font-semibold text-ink;
+  }
+  .rich-text a {
+    @apply text-ink underline underline-offset-4 hover:text-primary;
+  }
+  .rich-text ul {
+    @apply list-disc space-y-1 pl-6;
+  }
+  .rich-text ol {
+    @apply list-decimal space-y-1 pl-6;
+  }
+  .rich-text blockquote {
+    @apply border-l-4 border-primary pl-4 text-ink-mid italic;
+  }
+  .rich-text img {
+    @apply rounded-md;
+  }
+}
+
+/* Câu hỏi thường gặp dùng <details>: mở và đóng đều có chuyển động (trình duyệt hỗ trợ). */
+:root {
+  interpolate-size: allow-keywords;
+}
+.faq-item::details-content {
+  block-size: 0;
+  overflow: clip;
+  transition:
+    block-size var(--duration-base) var(--ease-brand),
+    content-visibility var(--duration-base) allow-discrete;
+}
+.faq-item[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

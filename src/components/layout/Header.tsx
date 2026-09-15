@@ -1,78 +1,118 @@
-import { Link } from '@/i18n/navigation'
-import { useTranslations } from 'next-intl'
-import { TextLink } from '@/components/ui/TextLink'
-import { NutLienHe } from '@/components/contact/NutLienHe'
-import type { HomeContent } from '@/lib/content'
+'use client'
 
-/**
- * Thanh điều hướng — dải kem đặc, viền dưới nét đứt, đứng yên trên đầu trang.
- *
- * Đây là bản viết lại hoàn toàn so với GĐ2. Bản cũ là header `fixed` trong
- * suốt, có nền tối mờ dần theo vị trí cuộn (motion + useScroll + đo tier thiết
- * bị). Bỏ hết vì hai lý do:
- *
- *  1. Toàn bộ hiệu ứng đó chỉ tồn tại để header đọc được khi nằm ĐÈ lên ảnh
- *     hero. Hero trang chủ giờ là nền kem, không còn ảnh để đè, nên cả cơ chế
- *     mất lý do tồn tại — kể cả cờ `measured` từng phải thêm để chặn lỗi nháy
- *     một thanh tối lên hero ở lần vẽ đầu.
- *  2. `fixed` buộc MỌI trang phải tự chừa khoảng trống trên đỉnh (trang liên hệ
- *     từng phải `pt-40`). `sticky` chiếm chỗ thật trong luồng nên không trang
- *     nào phải biết header cao bao nhiêu nữa.
- *
- * Kèm theo đó header không còn là client component — không hook, không state.
- *
- * Không còn nút Zalo nền cam. Nó là chi tiết phá tông mạnh nhất của bản cũ:
- * một nút pill màu bão hoà cạnh chữ serif khổ lớn kéo cả trang về hạng "web
- * dịch vụ". Zalo vẫn ở đây, dưới dạng chữ gạch chân — và vẫn là mục nổi bật
- * nhất bên phải nhờ vách ngăn nét đứt tách riêng nó khỏi nhóm liên kết.
- */
-export function Header({ contact }: { contact: HomeContent['contact'] }) {
-  const t = useTranslations('nav')
-  const tc = useTranslations('cta')
-  const tb = useTranslations('brand')
+import * as NavigationMenu from '@radix-ui/react-navigation-menu'
+import { ChevronDown, Phone } from 'lucide-react'
+import { useTranslations } from 'next-intl'
+import { useSyncExternalStore } from 'react'
+
+import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher'
+import { MegaMenuPanel } from '@/components/layout/MegaMenuPanel'
+import { MobileNav } from '@/components/layout/MobileNav'
+import { buttonClassName } from '@/components/ui/Button'
+import { Container } from '@/components/ui/Container'
+import { Logo } from '@/components/ui/Logo'
+import { Link } from '@/i18n/navigation'
+import { cn } from '@/lib/cn'
+import { hotlineHref } from '@/lib/contact'
+import type { ContactSettings, NavItem } from '@/types/content'
+
+type HeaderProps = {
+  /** Menu cấu hình trong admin (global `header`). */
+  items: NavItem[]
+  contact: ContactSettings
+  bookingHref: string
+}
+
+function subscribeScroll(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true })
+  return () => window.removeEventListener('scroll', onChange)
+}
+
+function navLinkClassName(highlight?: boolean | null) {
+  return cn(
+    'relative inline-flex h-10 items-center gap-1 rounded-md px-3 text-body-sm font-semibold text-ink transition-colors duration-(--duration-fast) ease-brand',
+    // Gạch chân mọc từ giữa ra hai bên (giữ từ nghiên cứu site tham khảo).
+    'after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:origin-center after:scale-x-0 after:rounded-pill after:bg-primary after:transition-transform after:duration-(--duration-slow) after:ease-brand hover:after:scale-x-100 data-[state=open]:after:scale-x-100',
+    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    highlight && 'bg-primary text-on-primary after:hidden hover:bg-primary/90',
+  )
+}
+
+export function Header({ items, contact, bookingHref }: HeaderProps) {
+  const t = useTranslations()
+  const scrolled = useSyncExternalStore(
+    subscribeScroll,
+    () => window.scrollY > 8,
+    () => false,
+  )
+  const tel = hotlineHref(contact)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-dashed border-rule bg-ink-950">
-      <div className="mx-auto flex max-w-lge items-stretch justify-between px-gutter">
-        {/* Nhỏ hơn một bậc trên điện thoại. Ở 390px, tên thương hiệu cỡ 24px
-            ngốn hết một phần ba bề ngang và đẩy toàn bộ điều hướng ra ngoài. */}
+    <header
+      data-scrolled={scrolled || undefined}
+      className="sticky top-0 z-40 border-b border-transparent bg-canvas/95 backdrop-blur-sm transition-[box-shadow,border-color] duration-(--duration-base) ease-brand data-[scrolled]:border-mute/60 data-[scrolled]:shadow-header"
+    >
+      <Container className="flex h-16 items-center justify-between gap-4 lg:h-18">
         <Link
           href="/"
-          className="font-display py-4 text-[1.375rem] transition-colors duration-[var(--duration-fast)] ease-[var(--ease-hover)] hover:text-clay-500 sm:text-d4"
+          aria-label={t('Nav.home')}
+          className="rounded-md focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
         >
-          {tb('name')}
+          <Logo />
         </Link>
 
-        <div className="flex items-stretch gap-4 sm:gap-6">
-          {/* Trên điện thoại chỉ đủ chỗ cho MỘT liên kết bên cạnh Zalo, nên
-              "Liên hệ" bị ẩn — không phải vì nó không quan trọng mà vì trang
-              đã có hai lối liên hệ khác nằm ngay trong luồng đọc: biểu mẫu ở
-              cuối trang chủ và số điện thoại ở chân trang. "Hành trình" thì
-              không có lối nào khác thay thế, nên nó ở lại. */}
-          <nav className="flex items-center gap-4 text-label uppercase sm:gap-6 sm:text-meta sm:normal-case">
-            <Link
-              href="/#hanh-trinh"
-              className="transition-colors duration-[var(--duration-fast)] ease-[var(--ease-hover)] hover:text-clay-500"
-            >
-              {t('journeys')}
-            </Link>
-            {/* Mở popup ngay tại chỗ thay vì sang /lien-he — xem NutLienHe.
-                Trang /lien-he vẫn còn nguyên cho link chia sẻ và tìm kiếm. */}
-            <NutLienHe className="hidden sm:inline" />
-          </nav>
+        <NavigationMenu.Root aria-label={t('Nav.main')} delayDuration={80} className="hidden lg:block">
+          <NavigationMenu.List className="flex items-center gap-1">
+            {items.map((item) => (
+              <NavigationMenu.Item key={item.href} value={item.href}>
+                {item.megaMenu ? (
+                  <>
+                    <NavigationMenu.Trigger className={cn(navLinkClassName(item.highlight), 'group')}>
+                      {item.label}
+                      <ChevronDown
+                        aria-hidden
+                        className="size-4 transition-transform duration-(--duration-base) ease-brand group-data-[state=open]:rotate-180"
+                      />
+                    </NavigationMenu.Trigger>
+                    <NavigationMenu.Content className="data-[motion^=from-]:animate-content-in data-[motion^=to-]:animate-content-out">
+                      <MegaMenuPanel item={item} />
+                    </NavigationMenu.Content>
+                  </>
+                ) : (
+                  <NavigationMenu.Link asChild>
+                    <Link href={item.href} className={navLinkClassName(item.highlight)}>
+                      {item.label}
+                    </Link>
+                  </NavigationMenu.Link>
+                )}
+              </NavigationMenu.Item>
+            ))}
+          </NavigationMenu.List>
 
-          {/* Vách ngăn dọc nét đứt — cùng ngôn ngữ với khung Frame. Chạy hết
-              chiều cao header (nhờ items-stretch ở hai cấp cha) nên nó là một
-              đường liền mạch với viền dưới, không phải một gạch lơ lửng. */}
-          <div aria-hidden className="border-l border-dashed border-rule" />
-
-          <div className="flex items-center">
-            <TextLink href={contact.zaloUrl} size="sm">
-              {tc('zalo')}
-            </TextLink>
+          {/* Root không định vị nên khung này bám theo <header> (sticky), canh giữa toàn chiều ngang. */}
+          <div className="absolute inset-x-0 top-full flex justify-center px-8 pt-2">
+            <NavigationMenu.Viewport className="relative h-(--radix-navigation-menu-viewport-height) w-(--radix-navigation-menu-viewport-width) origin-top overflow-hidden rounded-md border border-mute/60 bg-canvas shadow-panel transition-[width,height] duration-(--duration-base) ease-brand data-[state=closed]:animate-pop-out data-[state=open]:animate-pop-in" />
           </div>
+        </NavigationMenu.Root>
+
+        <div className="flex items-center gap-2 lg:gap-4">
+          {tel ? (
+            <a
+              href={tel}
+              className="hidden items-center gap-2 rounded-md text-body-sm font-semibold text-ink transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary xl:inline-flex"
+            >
+              <Phone aria-hidden className="size-4" />
+              <span className="sr-only">{t('Nav.hotline')}: </span>
+              {contact.hotline}
+            </a>
+          ) : null}
+          <LocaleSwitcher className="hidden lg:flex" />
+          <Link href={bookingHref} className={buttonClassName({ size: 'sm', className: 'hidden lg:inline-flex' })}>
+            {t('Common.bookTour')}
+          </Link>
+          <MobileNav items={items} contact={contact} bookingHref={bookingHref} />
         </div>
-      </div>
+      </Container>
     </header>
   )
 }
