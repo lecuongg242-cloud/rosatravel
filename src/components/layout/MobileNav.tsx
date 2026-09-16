@@ -5,12 +5,14 @@ import { ChevronDown, Menu, Phone, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useId, useState } from 'react'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher'
 import { buttonClassName } from '@/components/ui/Button'
 import { Logo } from '@/components/ui/Logo'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/cn'
 import { hotlineHref } from '@/lib/contact'
+import { isSamePath } from '@/lib/url'
 import type { ContactSettings, NavItem } from '@/types/content'
 
 type MobileNavProps = {
@@ -56,15 +58,17 @@ export function MobileNav({ items, contact, bookingHref }: MobileNavProps) {
             <ul className="divide-y divide-mute/60">
               {items.map((item, index) => {
                 if (!item.megaMenu) {
+                  // Mục trỏ đúng trang đặt tour thì bung popup thay vì chuyển trang.
+                  const Component = isSamePath(item.href, bookingHref) ? BookingTrigger : Link
                   return (
                     <li key={item.href}>
-                      <Link
+                      <Component
                         href={item.href}
                         onClick={close}
                         className="block py-4 font-display text-body-lg font-semibold text-ink"
                       >
                         {item.label}
-                      </Link>
+                      </Component>
                     </li>
                   )
                 }
@@ -133,9 +137,9 @@ export function MobileNav({ items, contact, bookingHref }: MobileNavProps) {
                 {contact.hotline}
               </a>
             ) : null}
-            <Link href={bookingHref} onClick={close} className={buttonClassName()}>
+            <BookingTrigger href={bookingHref} onClick={close} className={buttonClassName()}>
               {t('Common.bookTour')}
-            </Link>
+            </BookingTrigger>
             <LocaleSwitcher className="justify-center" />
           </div>
         </Dialog.Content>

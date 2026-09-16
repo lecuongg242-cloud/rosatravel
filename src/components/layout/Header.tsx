@@ -5,6 +5,7 @@ import { ChevronDown, Phone } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useSyncExternalStore } from 'react'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher'
 import { MegaMenuPanel } from '@/components/layout/MegaMenuPanel'
 import { MobileNav } from '@/components/layout/MobileNav'
@@ -14,6 +15,7 @@ import { Logo } from '@/components/ui/Logo'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/cn'
 import { hotlineHref } from '@/lib/contact'
+import { isSamePath } from '@/lib/url'
 import type { ContactSettings, NavItem } from '@/types/content'
 
 type HeaderProps = {
@@ -80,9 +82,16 @@ export function Header({ items, contact, bookingHref }: HeaderProps) {
                   </>
                 ) : (
                   <NavigationMenu.Link asChild>
-                    <Link href={item.href} className={navLinkClassName(item.highlight)}>
-                      {item.label}
-                    </Link>
+                    {/* Mục trỏ đúng trang đặt tour thì bung popup thay vì chuyển trang. */}
+                    {isSamePath(item.href, bookingHref) ? (
+                      <BookingTrigger href={item.href} className={navLinkClassName(item.highlight)}>
+                        {item.label}
+                      </BookingTrigger>
+                    ) : (
+                      <Link href={item.href} className={navLinkClassName(item.highlight)}>
+                        {item.label}
+                      </Link>
+                    )}
                   </NavigationMenu.Link>
                 )}
               </NavigationMenu.Item>
@@ -107,9 +116,9 @@ export function Header({ items, contact, bookingHref }: HeaderProps) {
             </a>
           ) : null}
           <LocaleSwitcher className="hidden lg:flex" />
-          <Link href={bookingHref} className={buttonClassName({ size: 'sm', className: 'hidden lg:inline-flex' })}>
+          <BookingTrigger href={bookingHref} className={buttonClassName({ size: 'sm', className: 'hidden lg:inline-flex' })}>
             {t('Common.bookTour')}
-          </Link>
+          </BookingTrigger>
           <MobileNav items={items} contact={contact} bookingHref={bookingHref} />
         </div>
       </Container>

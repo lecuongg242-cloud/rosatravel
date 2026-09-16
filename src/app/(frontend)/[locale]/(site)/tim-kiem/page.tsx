@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
-import NextLink from 'next/link'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { SearchBar } from '@/components/search/SearchBar'
 import { TourCard } from '@/components/tour/TourCard'
 import { buttonClassName } from '@/components/ui/Button'
@@ -83,9 +83,9 @@ export default async function SearchPage({ params, searchParams }: Props) {
         ) : (
           <div className="flex flex-col items-start gap-4 rounded-md bg-canvas-soft p-8">
             <p className="text-body-md text-ink">{t('noResults', { query: raw })}</p>
-            <NextLink href={getPathname({ href: settings.bookingPath || '/lien-he', locale })} className={buttonClassName()}>
+            <BookingTrigger href={settings.bookingPath || '/lien-he'} className={buttonClassName()}>
               {tListing('askConsultant')}
-            </NextLink>
+            </BookingTrigger>
           </div>
         )}
       </Container>

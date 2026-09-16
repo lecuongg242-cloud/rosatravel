@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { firstParam, withQuery } from './url'
+import { firstParam, isSamePath, withQuery } from './url'
 
 describe('withQuery', () => {
   it('bỏ giá trị rỗng, mã hóa ký tự tiếng Việt', () => {
@@ -19,5 +19,19 @@ describe('firstParam', () => {
     expect(firstParam(['a', 'b'])).toBe('a')
     expect(firstParam('x')).toBe('x')
     expect(firstParam(undefined)).toBeUndefined()
+  })
+})
+
+describe('isSamePath', () => {
+  it('bỏ qua query, hash và dấu gạch chéo cuối', () => {
+    expect(isSamePath('/lien-he', '/lien-he')).toBe(true)
+    expect(isSamePath('/lien-he/', '/lien-he')).toBe(true)
+    expect(isSamePath('/lien-he?tour=a', '/lien-he#gui-yeu-cau')).toBe(true)
+    expect(isSamePath('/', '/')).toBe(true)
+  })
+
+  it('đường dẫn khác nhau thì false', () => {
+    expect(isSamePath('/gioi-thieu', '/lien-he')).toBe(false)
+    expect(isSamePath('/lien-he-nhanh', '/lien-he')).toBe(false)
   })
 })

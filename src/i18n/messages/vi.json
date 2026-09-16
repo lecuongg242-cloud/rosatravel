@@ -130,6 +130,10 @@
       "message": "Lời nhắn tối đa 2000 ký tự."
     }
   },
+  "BookingDialog": {
+    "close": "Đóng",
+    "quickContact": "Hoặc liên hệ nhanh:"
+  },
   "Newsletter": {
     "fullName": "Họ tên",
     "phone": "Số điện thoại / Zalo",

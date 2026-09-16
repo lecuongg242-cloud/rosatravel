@@ -1,10 +1,11 @@
 import { Phone } from 'lucide-react'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { Badge } from '@/components/ui/Badge'
 import { buttonClassName } from '@/components/ui/Button'
 import { Price } from '@/components/ui/Price'
-import { Link } from '@/i18n/navigation'
+import { toDepartureOptions } from '@/lib/booking/departures'
 import { hotlineHref } from '@/lib/contact'
 import { upcomingDepartures, type Departure } from '@/lib/data/mappers'
 import { formatVnd } from '@/lib/format'
@@ -30,6 +31,7 @@ export async function BookingCard({ tour, bookingHref, contact }: BookingCardPro
   const departures = upcomingDepartures(tour.departures).slice(0, 5)
   const tel = hotlineHref(contact)
   const [bookingPath, hash] = bookingHref.split('#')
+  // Dự phòng khi chưa có JavaScript: vẫn mở trang liên hệ với đúng tour.
   const href = `${bookingPath}${bookingPath.includes('?') ? '&' : '?'}tour=${encodeURIComponent(tour.slug)}#${hash || 'gui-yeu-cau'}`
 
   return (
@@ -64,9 +66,18 @@ export async function BookingCard({ tour, bookingHref, contact }: BookingCardPro
       )}
 
       <div className="grid gap-2">
-        <Link href={href} className={buttonClassName({ className: 'w-full' })}>
+        <BookingTrigger
+          href={href}
+          payload={{
+            tourId: tour.id,
+            tourTitle: tour.title,
+            price: tour.price,
+            departures: toDepartureOptions(tour, format),
+          }}
+          className={buttonClassName({ className: 'w-full' })}
+        >
           {t('bookThisTour')}
-        </Link>
+        </BookingTrigger>
         {tel ? (
           <a href={tel} className={buttonClassName({ variant: 'tertiary', className: 'w-full' })}>
             <Phone aria-hidden className="size-5" />

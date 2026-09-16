@@ -5,9 +5,9 @@ import { MessageCircle, Phone, Plus, X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useEffect, useId, useRef, useState } from 'react'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { BrandIcon } from '@/components/ui/BrandIcon'
 import { buttonClassName } from '@/components/ui/Button'
-import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/cn'
 import { buildChannelLinks, hotlineHref, type ContactChannelLink } from '@/lib/contact'
 import type { ContactSettings } from '@/types/content'
@@ -58,9 +58,9 @@ export function FloatingContact({ contact, bookingHref }: FloatingContactProps) 
             </li>
           ) : null}
           <li className="p-2">
-            <Link href={bookingHref} className={buttonClassName({ size: 'sm', className: 'h-full w-full' })}>
+            <BookingTrigger href={bookingHref} className={buttonClassName({ size: 'sm', className: 'h-full w-full' })}>
               {t('Common.bookTour')}
-            </Link>
+            </BookingTrigger>
           </li>
           {extra.length ? (
             <li>

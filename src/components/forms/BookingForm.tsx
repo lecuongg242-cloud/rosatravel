@@ -9,12 +9,11 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Textarea } from '@/components/ui/Textarea'
+import type { DepartureOption } from '@/lib/booking/departures'
 import type { BookingField } from '@/lib/booking/schema'
 import { cn } from '@/lib/cn'
 
 import { FormMeta } from './FormMeta'
-
-export type DepartureOption = { value: string; label: string }
 
 type BookingFormProps = {
   /** `booking`: đặt một tour cụ thể. `consultation`: nhờ tư vấn chung. */

@@ -3,6 +3,7 @@ import NextLink from 'next/link'
 import { getFormatter, getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
+import { BookingTrigger } from '@/components/booking/BookingTrigger'
 import { TourCard } from '@/components/tour/TourCard'
 import { Button, buttonClassName } from '@/components/ui/Button'
 import { Pagination } from '@/components/ui/Pagination'
@@ -161,9 +162,9 @@ export async function TourListing({ basePath, locale, filters, result, cities, b
                 {t('reset')}
               </NextLink>
             ) : null}
-            <NextLink href={getPathname({ href: bookingHref, locale })} className={buttonClassName()}>
+            <BookingTrigger href={bookingHref} className={buttonClassName()}>
               {t('askConsultant')}
-            </NextLink>
+            </BookingTrigger>
           </div>
         </div>
       )}

@@ -3,16 +3,15 @@ import type { Metadata } from 'next'
 import { getFormatter, getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { RenderBlocks } from '@/components/blocks/RenderBlocks'
-import { BookingForm, type DepartureOption } from '@/components/forms/BookingForm'
+import { BookingForm } from '@/components/forms/BookingForm'
 import { PageHero } from '@/components/layout/PageHero'
 import { TourCard } from '@/components/tour/TourCard'
 import { BrandIcon } from '@/components/ui/BrandIcon'
 import { Container } from '@/components/ui/Container'
+import { toDepartureOptions, type DepartureOption } from '@/lib/booking/departures'
 import { buildChannelLinks, hotlineHref } from '@/lib/contact'
-import { todayInVietnam } from '@/lib/booking/schema'
-import { toContactSettings, toTourSummary, upcomingDepartures } from '@/lib/data/mappers'
+import { toContactSettings, toTourSummary } from '@/lib/data/mappers'
 import { getPageBySlug, getSiteSettings, getTourBySlug } from '@/lib/data/queries'
-import { formatVnd } from '@/lib/format'
 import { firstParam } from '@/lib/url'
 
 type Props = {
@@ -57,16 +56,7 @@ export default async function ContactPage({ params, searchParams }: Props) {
   const tourSummary = interestedTour ? toTourSummary(interestedTour) : null
 
   // Chỉ cho chọn ngày còn nhận khách; "Ngày khác" luôn có sẵn trong form.
-  const today = todayInVietnam()
-  const departureOptions: DepartureOption[] = interestedTour
-    ? upcomingDepartures(interestedTour.departures)
-        .filter((departure) => departure.status === 'available' || departure.status === 'limited')
-        .map((departure) => ({
-          value: departure.date.slice(0, 10),
-          label: `${format.dateTime(new Date(departure.date), { day: '2-digit', month: '2-digit', year: 'numeric' })} – ${formatVnd(departure.price || interestedTour.price)}`,
-        }))
-        .filter((option) => option.value >= today)
-    : []
+  const departureOptions: DepartureOption[] = interestedTour ? toDepartureOptions(interestedTour, format) : []
 
   return (
     <>

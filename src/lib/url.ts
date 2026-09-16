@@ -14,3 +14,13 @@ export function withQuery(path: string, params: Record<string, string | number |
 export function firstParam(value: string | string[] | undefined): string | undefined {
   return Array.isArray(value) ? value[0] : value
 }
+
+function normalizePath(path: string): string {
+  const base = path.split(/[?#]/)[0]
+  return base.length > 1 ? base.replace(/\/+$/, '') : base
+}
+
+/** So hai đường dẫn, bỏ qua query, hash và dấu gạch chéo cuối. */
+export function isSamePath(a: string, b: string): boolean {
+  return normalizePath(a) === normalizePath(b)
+}

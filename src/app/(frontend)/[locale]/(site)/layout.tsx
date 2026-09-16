@@ -2,6 +2,7 @@ import { draftMode } from 'next/headers'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
+import { BookingDialogProvider } from '@/components/booking/BookingDialogProvider'
 import { FloatingContact } from '@/components/layout/FloatingContact'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
@@ -32,7 +33,7 @@ export default async function SiteLayout({ children, params }: Props) {
   const bookingHref = settings.bookingPath || '/lien-he'
 
   return (
-    <>
+    <BookingDialogProvider contact={contact} successMessage={settings.bookingSuccessMessage}>
       <a
         href="#noi-dung"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-on-primary"
@@ -57,6 +58,6 @@ export default async function SiteLayout({ children, params }: Props) {
         copyright={settings.copyright}
       />
       <FloatingContact contact={contact} bookingHref={bookingHref} />
-    </>
+    </BookingDialogProvider>
   )
 }
