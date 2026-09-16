@@ -31,7 +31,9 @@
   "Tour": {
     "duration": "{days} ngày {nights} đêm",
     "departure": "Khởi hành từ {place}",
+    "departureShort": "Từ {place}",
     "price": "Giá",
+    "discount": "Giảm {percent}%",
     "originalPrice": "Giá gốc",
     "from": "Chỉ từ",
     "rating": "{average} điểm từ {count} đánh giá",

@@ -7,6 +7,7 @@ import { Price } from '@/components/ui/Price'
 import { Rating } from '@/components/ui/Rating'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/cn'
+import { discountPercent } from '@/lib/format'
 import type { TourSummary } from '@/types/content'
 
 type TourCardProps = {
@@ -28,6 +29,7 @@ export function TourCard({
   className,
 }: TourCardProps) {
   const t = useTranslations('Tour')
+  const discount = discountPercent(tour.price, tour.originalPrice)
 
   return (
     <article
@@ -54,10 +56,17 @@ export function TourCard({
             ))}
           </div>
         ) : null}
+        {discount !== null ? (
+          <Badge tone="ink" className="absolute top-3 right-3">
+            <span aria-hidden>-{discount}%</span>
+            <span className="sr-only">{t('discount', { percent: discount })}</span>
+          </Badge>
+        ) : null}
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-4">
-        <h3 className="line-clamp-2 text-display-xs font-bold text-ink">
+        {/* Tên tour dài 60–85 ký tự; 2 dòng ở cỡ chữ đọc được là không đủ. */}
+        <h3 className="line-clamp-3 text-body-sm font-bold text-ink">
           <Link
             href={`/tour/${tour.slug}`}
             className="after:absolute after:inset-0 after:rounded-md focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-primary"
@@ -74,16 +83,17 @@ export function TourCard({
           />
         ) : null}
 
-        {/* Thẻ hẹp (lưới 4 cột) thì giá xuống dòng dưới, không làm ngắt chữ ở dòng thông tin. */}
-        <div className="mt-auto flex flex-wrap items-end justify-between gap-x-3 gap-y-2 border-t border-mute/60 pt-3">
-          <ul className="space-y-1 text-caption whitespace-nowrap text-body">
+        {/* Lưới 2 cột: giá luôn nằm góc phải, thẻ hẹp cũng không rớt xuống dòng riêng. */}
+        <div className="mt-auto grid grid-cols-[minmax(0,1fr)_auto] items-end gap-x-3 border-t border-mute/60 pt-3">
+          <ul className="min-w-0 space-y-1 text-caption text-body">
             <li className="flex items-center gap-1.5">
-              <Clock aria-hidden className="size-4 shrink-0 text-body-mid" />
-              {t('duration', { days: tour.durationDays, nights: tour.durationNights })}
+              <Clock aria-hidden className="size-4 shrink-0 text-primary" />
+              <span>{t('duration', { days: tour.durationDays, nights: tour.durationNights })}</span>
             </li>
             <li className="flex items-center gap-1.5">
-              <MapPin aria-hidden className="size-4 shrink-0 text-body-mid" />
-              {t('departure', { place: tour.departureFrom })}
+              <MapPin aria-hidden className="size-4 shrink-0 text-primary" />
+              {/* Nhãn ngắn để chừa chỗ cho giá; tỉnh tên dài thì xuống dòng chứ không cắt cụt. */}
+              <span>{t('departureShort', { place: tour.departureFrom })}</span>
             </li>
           </ul>
           <Price price={tour.price} originalPrice={tour.originalPrice} />

@@ -37,8 +37,19 @@ describe('TourCard', () => {
     expect(screen.getByText('3.180.000đ')).toBeTruthy()
     expect(screen.getByText('3.490.000đ').tagName).toBe('S')
     expect(screen.getByText('3 ngày 2 đêm')).toBeTruthy()
-    expect(screen.getByText('Khởi hành từ Hà Nội')).toBeTruthy()
+    expect(screen.getByText('Từ Hà Nội')).toBeTruthy()
     expect(screen.getByText('HOT')).toBeTruthy()
+  })
+
+  it('có giá gốc thì hiện nhãn phần trăm giảm', () => {
+    renderWithIntl(<TourCard tour={tour} />)
+    expect(screen.getByText('-8%')).toBeTruthy()
+    expect(screen.getByText('Giảm 8%')).toBeTruthy()
+  })
+
+  it('không có giá gốc thì không hiện nhãn giảm giá', () => {
+    renderWithIntl(<TourCard tour={{ ...tour, originalPrice: null }} />)
+    expect(screen.queryByText(/^-\d+%$/)).toBeNull()
   })
 
   it('không hiện giá gạch ngang khi giá gốc không lớn hơn giá bán', () => {
