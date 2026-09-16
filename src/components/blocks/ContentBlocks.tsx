@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 import type { ReactNode } from 'react'
 
 import { RichText } from '@/components/rich-text/RichText'
+import { ItineraryAccordion, type ItineraryDay } from '@/components/tour/ItineraryAccordion'
 import { toImage } from '@/lib/data/mappers'
 import { formatVnd } from '@/lib/format'
 import { youtubeId } from '@/lib/video'
@@ -60,47 +61,51 @@ export async function Itinerary({ block }: { block: ItineraryBlock }) {
   if (!days.length) return null
   const t = await getTranslations('Blocks')
 
+  // Dựng sẵn nội dung từng ngày ở máy chủ rồi trao cho phần đóng/mở phía trình duyệt.
+  const items: ItineraryDay[] = days.map((day, index) => {
+    const dayImages = images(day.images)
+    return {
+      key: day.id ?? String(index),
+      heading: (
+        <>
+          <span className="block font-display text-caption font-medium tracking-[1px] text-primary uppercase">
+            {t('day', { day: index + 1 })}
+          </span>
+          <span className="block font-display text-display-xs font-semibold text-ink">{day.title}</span>
+          {day.meals?.length ? (
+            <span className="mt-1 block text-caption text-body-mid">
+              {t('meals')}: {day.meals.map((meal) => t(`meal.${meal}`)).join(' · ')}
+            </span>
+          ) : null}
+        </>
+      ),
+      content: (
+        <>
+          <RichText data={day.content} />
+          {dayImages.length ? (
+            <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {dayImages.map((image, imageIndex) => (
+                <li key={`${image.url}-${imageIndex}`} className="relative aspect-[4/3] overflow-hidden rounded-md">
+                  <Image
+                    src={image.url}
+                    alt={image.alt}
+                    fill
+                    sizes="(min-width: 1024px) 18vw, 45vw"
+                    className="object-cover"
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : null}
+        </>
+      ),
+    }
+  })
+
   return (
     <div className="space-y-6">
       <BlockTitle>{block.title || t('itinerary')}</BlockTitle>
-      <ol className="space-y-8">
-        {days.map((day, index) => {
-          const dayImages = images(day.images)
-          return (
-            <li key={day.id ?? index} className="grid grid-cols-[auto_minmax(0,1fr)] gap-4">
-              <span
-                aria-hidden
-                className="flex size-10 items-center justify-center rounded-pill bg-primary font-display text-body-sm font-semibold text-on-primary"
-              >
-                {index + 1}
-              </span>
-              <div className="space-y-3">
-                <div>
-                  <p className="font-display text-caption font-medium tracking-[1px] text-primary uppercase">
-                    {t('day', { day: index + 1 })}
-                  </p>
-                  <h3 className="font-display text-display-xs font-semibold text-ink">{day.title}</h3>
-                  {day.meals?.length ? (
-                    <p className="mt-1 text-caption text-body-mid">
-                      {t('meals')}: {day.meals.map((meal) => t(`meal.${meal}`)).join(' · ')}
-                    </p>
-                  ) : null}
-                </div>
-                <RichText data={day.content} />
-                {dayImages.length ? (
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                    {dayImages.map((image, imageIndex) => (
-                      <div key={`${image.url}-${imageIndex}`} className="relative aspect-[4/3] overflow-hidden rounded-md">
-                        <Image src={image.url} alt={image.alt} fill sizes="(min-width: 1024px) 18vw, 45vw" className="object-cover" />
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-            </li>
-          )
-        })}
-      </ol>
+      <ItineraryAccordion days={items} />
     </div>
   )
 }

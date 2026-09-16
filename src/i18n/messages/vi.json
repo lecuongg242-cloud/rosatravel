@@ -178,6 +178,8 @@
   "Blocks": {
     "highlights": "Điểm nổi bật",
     "itinerary": "Lịch trình",
+    "expandAll": "Mở tất cả các ngày",
+    "collapseAll": "Thu gọn tất cả",
     "day": "Ngày {day}",
     "meals": "Bữa ăn",
     "meal": {
