@@ -9,6 +9,8 @@ type ImageTileProps = {
   title: string
   subtitle?: string | null
   image: ImageAsset | null
+  /** Ô nhỏ (vd. hàng "Tour đang xu hướng"): chữ nhỏ, lề sát hơn. */
+  compact?: boolean
   sizes?: string
   className?: string
 }
@@ -19,6 +21,7 @@ export function ImageTile({
   title,
   subtitle,
   image,
+  compact = false,
   sizes = '(min-width: 1024px) 33vw, 50vw',
   className,
 }: ImageTileProps) {
@@ -41,9 +44,18 @@ export function ImageTile({
         />
       ) : null}
       <span aria-hidden className="absolute inset-0 bg-linear-to-t from-ink/80 via-ink/20 to-transparent" />
-      <span className="absolute inset-x-4 bottom-4 lg:inset-x-6 lg:bottom-5">
-        <span className="block font-display text-display-xs font-semibold text-on-primary">{title}</span>
-        {subtitle ? <span className="mt-1 block line-clamp-2 text-caption text-canvas-soft/90">{subtitle}</span> : null}
+      <span className={cn('absolute', compact ? 'inset-x-2.5 bottom-2.5' : 'inset-x-4 bottom-4 lg:inset-x-6 lg:bottom-5')}>
+        <span
+          className={cn(
+            'block font-display font-semibold text-on-primary',
+            compact ? 'line-clamp-2 text-caption' : 'text-display-xs',
+          )}
+        >
+          {title}
+        </span>
+        {subtitle && !compact ? (
+          <span className="mt-1 block line-clamp-2 text-caption text-canvas-soft/90">{subtitle}</span>
+        ) : null}
       </span>
     </Link>
   )

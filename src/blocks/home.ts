@@ -154,6 +154,30 @@ export const CategoryTilesBlock: Block = {
       required: true,
       label: 'Danh mục',
     },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'layout',
+          type: 'select',
+          label: 'Kiểu hiển thị',
+          required: true,
+          defaultValue: 'grid',
+          options: [
+            { label: 'Lưới kín chiều ngang', value: 'grid' },
+            { label: 'Ô vuông nhỏ, căn giữa', value: 'compact' },
+          ],
+          admin: { width: '50%' },
+        },
+        {
+          name: 'tinted',
+          type: 'checkbox',
+          label: 'Nền kem ấm chạy hết chiều ngang',
+          admin: { width: '50%', description: 'Tách section này khỏi phần trên dưới.' },
+        },
+      ],
+    },
+    viewAllField(),
   ],
 }
 

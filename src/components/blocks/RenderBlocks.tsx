@@ -108,9 +108,25 @@ export function RenderBlocks({ blocks, locale, variant = 'sections' }: RenderBlo
       )
     }
 
-    const fullBleed = block.blockType === 'heroBanners'
+    if (block.blockType === 'heroBanners') {
+      return (
+        <section key={key} className="empty:hidden pb-6 lg:pb-10">
+          {content}
+        </section>
+      )
+    }
+
+    // Dải nền chạy hết chiều ngang, nội dung vẫn nằm trong khung container.
+    if (block.blockType === 'categoryTiles' && block.tinted) {
+      return (
+        <section key={key} className="empty:hidden bg-canvas-warm py-10 lg:py-14">
+          <div className={containerClassName}>{content}</div>
+        </section>
+      )
+    }
+
     return (
-      <section key={key} className={cn('empty:hidden', fullBleed ? 'pb-6 lg:pb-10' : cn(containerClassName, 'py-10 lg:py-14'))}>
+      <section key={key} className={cn('empty:hidden', containerClassName, 'py-10 lg:py-14')}>
         {content}
       </section>
     )

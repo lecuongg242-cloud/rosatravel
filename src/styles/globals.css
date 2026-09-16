@@ -16,6 +16,8 @@
   --color-mute: #c5c0b1;
   --color-canvas: #fffefb;
   --color-canvas-soft: #f8f4f0;
+  /* Dải nền ấm cho section cần tách khỏi nền kem, vd. "Tour đang xu hướng". */
+  --color-canvas-warm: #fff0e8;
 
   --color-success: #1f7a4d;
   --color-error: #b42318;

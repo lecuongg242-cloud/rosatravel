@@ -1627,6 +1627,21 @@ export interface PromoBannersBlock {
 export interface CategoryTilesBlock {
   title?: string | null;
   categories: (string | TourCategory)[];
+  layout: 'grid' | 'compact';
+  /**
+   * Tách section này khỏi phần trên dưới.
+   */
+  tinted?: boolean | null;
+  /**
+   * Để trống đường dẫn thì không hiện link.
+   */
+  viewAll?: {
+    label?: string | null;
+    /**
+     * Trang trong site: /tour/ha-giang · Trang ngoài: https://…
+     */
+    href?: string | null;
+  };
   id?: string | null;
   blockName?: string | null;
   blockType: 'categoryTiles';
@@ -1915,6 +1930,14 @@ export interface PromoBannersBlockSelect<T extends boolean = true> {
 export interface CategoryTilesBlockSelect<T extends boolean = true> {
   title?: T;
   categories?: T;
+  layout?: T;
+  tinted?: T;
+  viewAll?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+      };
   id?: T;
   blockName?: T;
 }

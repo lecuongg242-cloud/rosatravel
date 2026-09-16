@@ -159,17 +159,27 @@ export function CategoryTiles({ block }: { block: CategoryTilesBlock }) {
   const categories = block.categories.filter(isPopulated)
   if (!categories.length) return null
 
+  // `compact`: hàng ô vuông nhỏ căn giữa (vd. "Tour đang xu hướng").
+  const compact = block.layout === 'compact'
+
   return (
     <div className="space-y-6">
-      {block.title ? <SectionHeader title={block.title} /> : null}
-      <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      {block.title ? <SectionHeader title={block.title} action={viewAll(block.viewAll)} /> : null}
+      <ul
+        className={
+          compact
+            ? 'flex flex-wrap justify-center gap-3 sm:gap-4'
+            : 'grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6'
+        }
+      >
         {categories.map((category) => (
-          <li key={category.id}>
+          <li key={category.id} className={compact ? 'w-[calc(33.333%-0.5rem)] sm:w-32 lg:w-[9.375rem]' : undefined}>
             <ImageTile
               href={`/danh-muc/${category.slug}`}
               title={category.name}
               image={toImage(category.coverImage, 'thumbnail')}
-              sizes="(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw"
+              compact={compact}
+              sizes={compact ? '(min-width: 1024px) 150px, (min-width: 640px) 128px, 30vw' : '(min-width: 1024px) 16vw, (min-width: 640px) 33vw, 50vw'}
               className="aspect-square"
             />
           </li>
